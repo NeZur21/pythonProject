@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{%block content %}
+<div class="row bg-body-firstly py-lg-5 text-center">
+    <h1 class="fw-light">Contacts List</h1>
+    <p class="lead text-body-secondary col-lg-5 col-md-8 mx-auto fw-light">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
+</div>
+
+<div class="album bg-body-tertiary py-5">
+    <div class="container">
+    <table class="fw-light table">
+    <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+    {% for contact in contacts %}
+    <tr>
+        <td>{{ contact.name }}</td>
+        <td>{{ contact.phone }}</td>
+        <td>{{ contact.email }}</td>
+        <td>
+            <a href="{{ url_for('contact_list', contact_id=contact.id) }}">Edit</a> |
+            <a href="{{ url_for('contact_list', contact_id=contact.id) }}" onclick="return confirm('Are you sure?')">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+</div>
+
+
+
+{% endblock %}
