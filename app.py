@@ -1,5 +1,5 @@
 import flask
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+import db
 
 from flask import render_template
 
@@ -12,11 +12,10 @@ class Contact:
         self.phone = phone
         self.email = email
 
+contacts = []
 
-contacts = [
-    Contact(1, "Alice", "123456789", "alice@example.com"),
-    Contact(2, "Bob", "987654321", "bob@example.com")
-]
+for i in db.rows:
+    contacts.append(Contact(i.id, i.Name, i.Phone, i.Email))
 
 @app.route('/')
 def contact_list():
