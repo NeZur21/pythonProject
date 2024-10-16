@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{%block content %}
+
+<div class="row bg-body-primary py-lg-5 text-center">
+    <h1 class="fw-light">Contacts List</h1>
+    <p class="lead text-body-secondary col-lg-4 mx-auto fw-light">
+        Наша программа поможет вам легко управлять вашими контактами — добавляйте, редактируйте и удаляйте информацию
+        всего в несколько кликов. Все данные о ваших друзьях, коллегах и клиентах будут всегда под рукой, а интуитивно
+        понятный интерфейс сделает использование программы быстрым и удобным.
+    </p>
+    <h2 class="lead fw-light text-body-secondary mx-auto fw-light">Начните организовывать свои контакты прямо сейчас!</h2>
+</div>
+
+<div class="container-fluid bg-body-tertiary g-3 py-5">
+  <form action="{{ url_for('add_contact') }}"  method='POST' style="margin-left: 265px" class="row align-items-center">
+    <div class="col-auto">
+      <label for="name" class="col-form-label">Name:</label>
+    </div>
+    <div class="col-auto">
+      <input class="form-control fw-light" type="text" id="name" name="name" required>
+    </div>
+
+    <div class="col-auto">
+      <label for="phone" class="col-form-label">Phone:</label>
+    </div>
+    <div class="col-auto">
+      <input class="form-control fw-light" type="text" id="phone" name="phone" required>
+    </div>
+
+    <div class="col-auto">
+      <label for="email" class="col-form-label">Email:</label>
+    </div>
+    <div class="col-auto">
+      <input class="form-control fw-light" type="email" id="email" name="email" required>
+    </div>
+
+    <div class="col-auto">
+      <button class="fw-light btn btn-outline-primary btn-sm" type="submit">Update Contact</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
