@@ -12,20 +12,33 @@
     <h2 class="lead fw-light text-body-secondary mx-auto fw-light">Начните организовывать свои контакты прямо сейчас!</h2>
 </div>
 
-<form class="row fw-light container-fluid bg-body-tertiary py-5 text-center g-3" action="{{ url_for('edit_contact', contact_id=contact.id) }}" method="POST">
-    <div class="justify-content-center">
-        <label for="name">Name:</label>
-        <input style="margin-left: 100px" class="form-control w-50 fw-light" type="text" id="name" name="name" value="{{ contact.name }}" required>
-
-        <label for="phone">Phone:</label>
-        <input class="form-control w-50 fw-light" type="text" id="phone" name="phone" value="{{ contact.phone }}" required>
-
-        <label for="email">Email:</label>
-        <input class="form-control w-50 fw-light" type="email" id="email" name="email" value="{{ contact.email }}" required>
-
-        <button class="fw-light btn btn-outline-primary btn-sm -flex" type="submit" style="margin-top: -4px; margin-left: 10px;" >Update Contact</button>
+<div class="container-fluid bg-body-tertiary g-3 py-5">
+  <form action="{{ url_for('edit_contact', contact_id=contact.id) }}"  method='POST' style="margin-left: 265px" class="row align-items-center">
+    <div class="col-auto">
+      <label for="name" class="col-form-label">Name:</label>
+    </div>
+    <div class="col-auto">
+      <input class="form-control fw-light" type="text" id="name" name="name" value="{{ contact.name }}" required>
     </div>
 
-</form>
+    <div class="col-auto">
+      <label for="phone" class="col-form-label">Phone:</label>
+    </div>
+    <div class="col-auto">
+      <input class="form-control fw-light" type="text" id="phone" name="phone" value="{{ contact.phone }}" required>
+    </div>
+
+    <div class="col-auto">
+      <label for="email" class="col-form-label">Email:</label>
+    </div>
+    <div class="col-auto">
+      <input class="form-control fw-light" type="email" id="email" name="email" value="{{ contact.email }}" required>
+    </div>
+
+    <div class="col-auto">
+      <button class="fw-light btn btn-outline-primary btn-sm" type="submit">Update Contact</button>
+    </div>
+  </form>
+</div>
 
 {% endblock %}
