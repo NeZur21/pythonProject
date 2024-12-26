@@ -32,7 +32,7 @@ class ContactServices:
         self.contacts.append(new_contact)
         self.add_to_db(new_contact)
 
-    def add_to_db(self, contact):
+    def update_contact_in_db(self, contact):
         connection = get_db_connection()
         cursor = connection.cursor()
         query = """
@@ -55,7 +55,7 @@ class ContactServices:
         contact.email = email
         self.update_contact_in_db(contact)
 
-    def update_contact_in_db(self, contact):
+    def add_to_db(self, contact):
         connection = get_db_connection()
         cursor = connection.cursor()
         query = """

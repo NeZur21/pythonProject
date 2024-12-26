@@ -7,7 +7,7 @@ contact_service = ContactServices()
 
 @contact_main.route('/')
 def main():
-    return render_template('base.html')
+    return render_template('main.html')
 
 @contact_main.route('/contact')
 def all_contacts():
