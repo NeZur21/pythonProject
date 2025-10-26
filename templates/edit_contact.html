@@ -36,6 +36,20 @@
     </div>
 
     <div class="col-auto">
+      <label for="org" class="col-form-label">Organization:</label>
+    </div>
+    <div class="col-auto">
+      <input class="form-control fw-light" type="text" id="org" name="org" value="{{ contact.email }}" required>
+    </div>
+
+    <div class="col-auto">
+      <label for="email" class="col-form-label">Date:</label>
+    </div>
+    <div class="col-auto">
+      <input class="form-control fw-light" type="date" id="date" name="date" value="{{ contact.email }}" required>
+    </div>
+
+    <div class="col-auto">
       <button class="fw-light btn btn-outline-primary btn-sm" type="submit">Update Contact</button>
     </div>
   </form>

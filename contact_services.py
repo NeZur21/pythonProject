@@ -12,11 +12,11 @@ class ContactServices:
         contacts = []
         connection = get_db_connection()
         cursor = connection.cursor()
-        cursor.execute('SELECT id, Name, Phone, Email FROM Contact ')
+        cursor.execute('SELECT id, Name, Phone, Email, Organization, Birthday FROM Contact ')
         rows = cursor.fetchall()
 
         for i in rows:
-            contacts.append(Contact(i.id, i.Name, i.Phone, i.Email))
+            contacts.append(Contact(i.id, i.Name, i.Phone, i.Email, i.Organization, i.Birthday))
         connection.close()
         return contacts
 
@@ -26,9 +26,9 @@ class ContactServices:
     def get_contact_by_id(self, contact_id):
         return next((c for c in self.contacts if c.id == contact_id), None)
 
-    def add_contact(self, name, phone, email):
+    def add_contact(self, name, phone, email, org, date):
         id = len(self.contacts) + 1
-        new_contact = Contact(id, name, phone, email)
+        new_contact = Contact(id, name, phone, email, org, date)
         self.contacts.append(new_contact)
         self.add_to_db(new_contact)
 
@@ -39,20 +39,22 @@ class ContactServices:
                     UPDATE
                       dbo.Contact
                     SET
-                      Name=?, Phone=?, Email=?
+                      Name=?, Phone=?, Email=?, Organization=?, Date=?
                     WHERE
                       id = ?
                     """
-        cursor.execute(query, (contact.name, contact.phone, contact.email, contact.id,))
-        print(*cursor.execute('SELECT id, Name, Phone, Email FROM Contact '))
+        cursor.execute(query, (contact.name, contact.phone, contact.email, contact.org, contact.date, contact.id,))
+        print(*cursor.execute('SELECT id, Name, Phone, Email, Organization, Birthday FROM Contact '))
         connection.commit()
         connection.close()
 
-    def update_contact(self, contact_id, name, phone, email):
+    def update_contact(self, contact_id, name, phone, email, org, date):
         contact = self.get_contact_by_id(contact_id)
         contact.name = name
         contact.phone = phone
         contact.email = email
+        contact.org = org
+        contact.date = date
         self.update_contact_in_db(contact)
 
     def add_to_db(self, contact):
@@ -62,10 +64,10 @@ class ContactServices:
                     INSERT INTO
                         dbo.Contact
                     VALUES
-                        (?, ?, ?, ?)
+                        (?, ?, ?, ?, ?, ?)
                     """
-        cursor.execute(query, (contact.id, contact.name, contact.phone, contact.email))
-        print(*cursor.execute('SELECT id, Name, Phone, Email FROM Contact '))
+        cursor.execute(query, (contact.id, contact.name, contact.phone, contact.email, contact.org, contact.date))
+        print(*cursor.execute('SELECT id, Name, Phone, Email, Organization, Birthday FROM Contact '))
         connection.commit()
         connection.close()
 
@@ -81,7 +83,7 @@ class ContactServices:
                     FROM dbo.Contact WHERE id=?
                     """
         cursor.execute(query, (contact_id,))
-        print(*cursor.execute('SELECT id, Name, Phone, Email FROM Contact '))
+        print(*cursor.execute('SELECT id, Name, Phone, Email, Organization, Birthday FROM Contact '))
         connection.commit()
         connection.close()
 

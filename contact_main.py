@@ -22,7 +22,9 @@ def edit_contact(contact_id):
             contact_id,
             request.form['name'],
             request.form['phone'],
-            request.form['email']
+            request.form['email'],
+            request.form['org'],
+            request.form['date']
         )
         return redirect(url_for('all_contacts'))  # Здесь правильный вызов
     return render_template('edit_contact.html', contact=contact)
@@ -33,7 +35,9 @@ def add_contact():
         contact_service.add_contact(
             request.form['name'],
             request.form['phone'],
-            request.form['email']
+            request.form['email'],
+            request.form['org'],
+            request.form['date']
         )
         return redirect(url_for('all_contacts'))  # Здесь правильный вызов
     return render_template('add_contact.html')
