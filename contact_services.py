@@ -12,11 +12,22 @@ class ContactServices:
         contacts = []
         connection = get_db_connection()
         cursor = connection.cursor()
-        cursor.execute('SELECT id, Name, Phone, Email, Organization, Birthday FROM Contact ')
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            Name TEXT,
+            Phone TEXT,
+            Email TEXT,
+            Organization TEXT,
+            Birthday DATE
+        )
+        ''')
+        connection.commit()
+        cursor.execute("SELECT id, Name, Phone, Email, Organization, Birthday FROM users")
         rows = cursor.fetchall()
 
         for i in rows:
-            contacts.append(Contact(i.id, i.Name, i.Phone, i.Email, i.Organization, i.Birthday))
+            contacts.append(Contact(i[0], i[1], i[2], i[3], i[4], i[5]))
         connection.close()
         return contacts
 
@@ -27,24 +38,20 @@ class ContactServices:
         return next((c for c in self.contacts if c.id == contact_id), None)
 
     def add_contact(self, name, phone, email, org, date):
-        id = len(self.contacts) + 1
-        new_contact = Contact(id, name, phone, email, org, date)
-        self.contacts.append(new_contact)
+        new_contact = Contact(None, name, phone, email, org, date)
         self.add_to_db(new_contact)
+        self.contacts.append(new_contact)
 
     def update_contact_in_db(self, contact):
         connection = get_db_connection()
         cursor = connection.cursor()
         query = """
-                    UPDATE
-                      dbo.Contact
-                    SET
-                      Name=?, Phone=?, Email=?, Organization=?, Date=?
-                    WHERE
-                      id = ?
-                    """
+                UPDATE users
+                SET Name=?, Phone=?, Email=?, Organization=?, Birthday=?
+                WHERE id=?
+            """
         cursor.execute(query, (contact.name, contact.phone, contact.email, contact.org, contact.date, contact.id,))
-        print(*cursor.execute('SELECT id, Name, Phone, Email, Organization, Birthday FROM Contact '))
+        print(*cursor.execute('SELECT id, Name, Phone, Email, Organization, Birthday FROM users '))
         connection.commit()
         connection.close()
 
@@ -61,13 +68,12 @@ class ContactServices:
         connection = get_db_connection()
         cursor = connection.cursor()
         query = """
-                    INSERT INTO
-                        dbo.Contact
-                    VALUES
-                        (?, ?, ?, ?, ?, ?)
+                    INSERT INTO users (Name, Phone, Email, Organization, Birthday)
+        VALUES (?, ?, ?, ?, ?)
                     """
-        cursor.execute(query, (contact.id, contact.name, contact.phone, contact.email, contact.org, contact.date))
-        print(*cursor.execute('SELECT id, Name, Phone, Email, Organization, Birthday FROM Contact '))
+        cursor.execute(query, (contact.name, contact.phone, contact.email, contact.org, contact.date))
+        print(*cursor.execute('SELECT id, Name, Phone, Email, Organization, Birthday FROM users '))
+        contact.id = cursor.lastrowid
         connection.commit()
         connection.close()
 
@@ -80,10 +86,10 @@ class ContactServices:
         cursor = connection.cursor()
         query = """
                     DELETE
-                    FROM dbo.Contact WHERE id=?
+                    FROM users WHERE id=?
                     """
         cursor.execute(query, (contact_id,))
-        print(*cursor.execute('SELECT id, Name, Phone, Email, Organization, Birthday FROM Contact '))
+        print(*cursor.execute('SELECT id, Name, Phone, Email, Organization, Birthday FROM users '))
         connection.commit()
         connection.close()
 

@@ -12,7 +12,18 @@ def main():
 @contact_main.route('/contact')
 def all_contacts():
     contacts = contact_service.get_all_contacts()
-    return render_template('contacts.html', contacts=contacts)
+    search_query = request.args.get('search', '').lower()
+    if search_query:
+        results = [
+            c for c in contacts
+            if search_query in (c.name or "").lower()
+               or search_query in (c.phone or "").lower()
+               or search_query in (c.email or "").lower()
+               or search_query in (c.org or "").lower()
+        ]
+    else:
+        results = contacts
+    return render_template('contacts.html', contacts=results, search_query=search_query)
 
 @contact_main.route('/contact/edit/<int:contact_id>', methods=['GET', 'POST'])
 def edit_contact(contact_id):
